@@ -5,14 +5,13 @@
 //  Created by Ye Park on 4/11/25.
 //
 
-import SwiftUI
-import Observation
 import FirebaseAuth
 import FirebaseCore
 
-struct UserModel {
+struct UserModel: Codable {
     let uid: String
     let email: String
+    var comments: String = ""
     
     init(user: User) {
         uid = user.uid

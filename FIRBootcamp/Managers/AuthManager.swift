@@ -9,6 +9,7 @@ import SwiftUI
 import Observation
 import FirebaseAuth
 import FirebaseCore
+import FirebaseFirestore
 
 class AuthManager {
     
@@ -19,13 +20,11 @@ class AuthManager {
     // MARK: Email signing
     func EmailSignUp(email: String, password: String) async throws {
         let signUpResult = try await Auth.auth().createUser(withEmail: email, password: password)
-        
         currentUser = UserModel(user: signUpResult.user)
     }
     
     func EmailSignIn(email: String, password: String) async throws {
         let signInResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        
         currentUser = UserModel(user: signInResult.user)
     }
     
@@ -33,20 +32,17 @@ class AuthManager {
     // MARK: Google signing
     func googleSignIn(credential: AuthCredential) async throws {
         try await Auth.auth().signIn(with: credential)
+        if let authuser = getAuthenticatedUser() {
+            currentUser = authuser
+        }
     }
     
-    
-    
-    
-    
-    
+
     // MARK: Universal
     
     func signOut() {
-        
         do {
             try Auth.auth().signOut()
-            
         } catch {
             print("Error signing out: \(error.localizedDescription)")
         }

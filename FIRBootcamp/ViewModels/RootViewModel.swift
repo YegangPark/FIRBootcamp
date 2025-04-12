@@ -11,3 +11,24 @@ import GoogleSignInSwift
 import FirebaseAuth
 import Observation
 
+@MainActor @Observable
+final class RootViewModel {
+    
+    func googleSignIn() async throws {
+        guard let topVC = Utilities.shared.topViewController() else {
+            throw URLError(.cannotFindHost)
+        }
+        
+        let gidSignInResults = try await GIDSignIn.sharedInstance.signIn(withPresenting: topVC)
+        
+        guard let idToken: String = gidSignInResults.user.idToken?.tokenString else {
+            throw URLError(.unknown)
+        }
+        
+        let accessToken: String = gidSignInResults.user.accessToken.tokenString
+        
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+        
+        try await AuthManager.shared.googleSignIn(credential: credential)
+    }
+}

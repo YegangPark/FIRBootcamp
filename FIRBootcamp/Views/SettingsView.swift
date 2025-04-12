@@ -11,17 +11,17 @@ import Observation
 struct SettingsView: View {
     
     @Binding var isSignedIn: Bool
-    private(set) var viewModel = SettingsViewModel()
+    @State private(set) var viewModel = SettingsViewModel()
     
     var body: some View {
         List {
-            Button {
-                
-            } label: {
-                Text("Leave your comment")
+            NavigationLink("Leave a comment") {
+                CommentView()
             }
+            .foregroundStyle(Color.accentColor)
             
-            
+            Button(viewModel.commentButtonText) { }
+
             Button(role: .destructive) {
                 viewModel.signOut()
                 isSignedIn = false

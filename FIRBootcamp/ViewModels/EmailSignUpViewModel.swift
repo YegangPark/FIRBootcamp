@@ -18,6 +18,12 @@ final class EmailSignUpViewModel {
     
     func signUp() async throws {
         try await AuthManager.shared.EmailSignUp(email: email, password: password)
+        
+        guard let user = AuthManager.shared.getAuthenticatedUser() else {
+            print("Couldn't get user")
+            return
+        }
+        UserManager.shared.createUserDoc(for: user)
     }
     
     func signIn() async throws {
@@ -27,5 +33,4 @@ final class EmailSignUpViewModel {
             print("Error signing in: \(error.localizedDescription)")
         }
     }
-
 }

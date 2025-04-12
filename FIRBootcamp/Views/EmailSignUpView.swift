@@ -26,6 +26,7 @@ struct EmailSignUpView: View {
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
+                .padding(.horizontal)
             
             SecureField("Password", text: $viewModel.password)
                 .autocapitalization(.none)
@@ -33,8 +34,9 @@ struct EmailSignUpView: View {
                 .padding()
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
-
-            Button("Sign Up or In") {
+                .padding(.horizontal)
+            
+            Button {
                 Task {
                     do {
                         try await viewModel.signUp()
@@ -54,16 +56,13 @@ struct EmailSignUpView: View {
                         }
                     }
                 }
+            } label: {
+                BigButtonLabelViewProvider(text: "Sign Up or In")
             }
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .frame(height: 55)
-            .background(Color.blue)
-            .cornerRadius(10)
+
             
             Spacer()
         }
-        .padding()
         .navigationTitle("Sign in with Email")
     }
 }

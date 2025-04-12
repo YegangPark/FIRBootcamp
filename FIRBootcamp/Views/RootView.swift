@@ -11,29 +11,6 @@ import GoogleSignInSwift
 import FirebaseAuth
 import Observation
 
-@Observable
-final class RootViewModel {
-    
-    @MainActor
-    func googleSignIn() async throws {
-        guard let topVC = Utilities.shared.topViewController() else {
-            throw URLError(.cannotFindHost)
-        }
-        
-        let gidSignInResults = try await GIDSignIn.sharedInstance.signIn(withPresenting: topVC)
-        
-        guard let idToken: String = gidSignInResults.user.idToken?.tokenString else {
-            throw URLError(.unknown)
-        }
-        
-        let accessToken: String = gidSignInResults.user.accessToken.tokenString
-        
-        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
-        
-        try await AuthManager.shared.googleSignIn(credential: credential)
-    }
-}
-
 
 struct RootView: View {
     
@@ -57,26 +34,7 @@ struct RootView: View {
                         .padding()
                 }
                 
-//                Button("Sign in with Google") {
-//                    Task {
-//                        do {
-//                            try await viewModel.googleSignIn()
-//                            isSignedIn = true
-//                            
-//                        } catch {
-//                            print("Error signing in: \(error)")
-//                        }
-//                    }
-//                }
-//                .foregroundStyle(.white)
-//                .font(.headline)
-//                .frame(maxWidth: .infinity)
-//                .frame(height: 55)
-//                .background(Color.blue)
-//                .cornerRadius(10)
-//                .padding()
-//
-                GoogleSignInButton(scheme: .dark, style: .standard, state: .normal) {
+                Button("Sign in with Google") {
                     Task {
                         do {
                             try await viewModel.googleSignIn()
@@ -87,7 +45,26 @@ struct RootView: View {
                         }
                     }
                 }
+                .foregroundStyle(.white)
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color.blue)
+                .cornerRadius(10)
                 .padding()
+//
+//                GoogleSignInButton(scheme: .dark, style: .standard, state: .normal) {
+//                    Task {
+//                        do {
+//                            try await viewModel.googleSignIn()
+//                            isSignedIn = true
+//                            
+//                        } catch {
+//                            print("Error signing in: \(error)")
+//                        }
+//                    }
+//                }
+//                .padding()
             }
             .navigationTitle("Sign-in methods")
         }

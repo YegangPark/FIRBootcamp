@@ -39,6 +39,7 @@ class AuthManager {
     
     
     
+    
     // MARK: Universal
     
     func signOut() {

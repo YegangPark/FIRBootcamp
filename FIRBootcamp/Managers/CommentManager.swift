@@ -15,18 +15,27 @@ final class CommentManager {
     
     private init() { }
     
-    func uploadComment() async throws {
+    private let db = Firestore.firestore()
+    
+    private var user = AuthManager.shared.getAuthenticatedUser()
+    
+    func addComment(comment: String) async throws {
         
-        guard let user = AuthManager.shared.getAuthenticatedUser() else {
-            return
-        }
-                
-        let db = Firestore.firestore()
-        let newComment = "Ye Park"
+        guard let user = user else { throw URLError(.badServerResponse) }
         
-        try await db.collection("users").document(user.uid)
-            .updateData(["comment": newComment])
+        try await db.collection("users").document(user.uid).updateData(["comment": comment])
     }
     
-    
+    func getUserComment() async throws -> String {
+        
+        guard let user = user else { throw URLError(.badServerResponse) }
+
+        let doc = try await db.collection("users").document(user.uid).getDocument()
+        
+        guard let data = doc.data() else {
+            throw URLError(.cannotCloseFile)
+        }
+        
+        return data["comment"] as? String ?? ""
+    }
 }

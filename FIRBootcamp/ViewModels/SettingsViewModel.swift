@@ -15,15 +15,12 @@ final class SettingsViewModel {
         AuthManager.shared.signOut()
     }
     
-    @discardableResult
-    func getMyComment() -> String {
-        guard let comment = AuthManager.shared.getAuthenticatedUser()?.comments else {
-            return "No comment"
+    func getUserComment() async -> String {
+        do {
+            return try await CommentManager.shared.getUserComment()
+        } catch {
+            print("Error getting user comment: \(error.localizedDescription)")
+            return "Could not load comment."
         }
-        return comment
-    }
-    
-    var commentButtonText: String {
-        getMyComment()
     }
 }

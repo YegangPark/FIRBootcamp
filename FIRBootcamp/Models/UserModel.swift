@@ -11,7 +11,7 @@ import FirebaseCore
 struct UserModel: Codable {
     let uid: String
     let email: String
-    var comments: String = ""
+    var comment: String = ""
     
     init(user: User) {
         uid = user.uid

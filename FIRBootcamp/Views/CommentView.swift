@@ -9,25 +9,9 @@ import SwiftUI
 import Observation
 
 
-@Observable
-final class CommentViewModel {
-    
-    var commentText: String = ""
-    
-    func addComment() async {
-        do {
-            try await CommentManager.shared.uploadComment()
-        } catch {
-            print("Error uploading comment: \(error.localizedDescription)")
-        }
-    }
-}
-
-
-
-
 struct CommentView: View {
     
+    @Environment(\.dismiss) private var dismiss
     @State private var viewModel = CommentViewModel()
     
     var body: some View {
@@ -45,12 +29,11 @@ struct CommentView: View {
                 .padding()
             
             Button {
-                
                 Task {
                     await viewModel.addComment()
                     viewModel.commentText = ""
+                    dismiss()
                 }
-                
             } label: {
                 BigButtonLabelViewProvider(text: "Upload")
             }

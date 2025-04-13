@@ -22,9 +22,10 @@ class UserManager {
         let userData: [String: Any] = [
             "uid" : user.uid,
             "email" : user.email,
-            "comment" : user.comments
+            "comment" : user.comment
         ]
 
         db.collection("users").document(user.uid).setData(userData, merge: false)
     }
+    
 }

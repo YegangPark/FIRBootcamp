@@ -12,6 +12,7 @@ struct SettingsView: View {
     
     @Binding var isSignedIn: Bool
     @State private(set) var viewModel = SettingsViewModel()
+    @State private var showAlert: Bool = false
     
     var body: some View {
         List {
@@ -20,7 +21,10 @@ struct SettingsView: View {
             }
             .foregroundStyle(Color.accentColor)
             
-            Button(viewModel.commentButtonText) { }
+            NavigationLink("My comment") {
+                MyCommentView()
+                    .environment(viewModel)
+            }
 
             Button(role: .destructive) {
                 viewModel.signOut()

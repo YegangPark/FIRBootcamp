@@ -43,6 +43,7 @@ class AuthManager {
     func signOut() {
         do {
             try Auth.auth().signOut()
+            print("Signed out successfully")
         } catch {
             print("Error signing out: \(error.localizedDescription)")
         }
@@ -53,6 +54,5 @@ class AuthManager {
             return nil
         }
         return UserModel(user: user)
-    }
-    
+    }    
 }

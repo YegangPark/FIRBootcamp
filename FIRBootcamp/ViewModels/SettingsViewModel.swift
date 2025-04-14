@@ -11,8 +11,14 @@ import Observation
 @Observable
 final class SettingsViewModel {
     
+    private(set) var currentUserEmail = AuthManager.shared.currentUser?.email ?? "Anonymous"
+    
     func signOut() {
-        AuthManager.shared.signOut()
+        do {
+            try AuthManager.shared.signOut()
+        } catch {
+            print("Error signing out user: \(error.localizedDescription)")
+        }
     }
     
     func getUserComment() async -> String {

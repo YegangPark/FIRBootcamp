@@ -28,4 +28,12 @@ class UserManager {
         db.collection("users").document(user.uid).setData(userData, merge: false)
     }
     
+    func createUserDocIfNotExists() {
+        guard let user = AuthManager.shared.getAuthenticatedUser() else {
+            print("Couldn't get user")
+            return
+        }
+        UserManager.shared.createUserDoc(for: user)
+    }
+    
 }

@@ -13,17 +13,13 @@ import FirebaseCore
 
 @Observable
 final class EmailSignUpViewModel {
+    
     var email: String = ""
     var password: String = ""
     
     func signUp() async throws {
-        try await AuthManager.shared.EmailSignUp(email: email, password: password)
-        
-        guard let user = AuthManager.shared.getAuthenticatedUser() else {
-            print("Couldn't get user")
-            return
-        }
-        UserManager.shared.createUserDoc(for: user)
+        try await AuthManager.shared.EmailSignUp(email: email, password: password)        
+        UserManager.shared.createUserDocIfNotExists()
     }
     
     func signIn() async throws {

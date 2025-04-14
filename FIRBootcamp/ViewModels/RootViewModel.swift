@@ -30,5 +30,7 @@ final class RootViewModel {
         let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
         
         try await AuthManager.shared.googleSignIn(credential: credential)
+        
+        UserManager.shared.createUserDocIfNotExists()
     }
 }

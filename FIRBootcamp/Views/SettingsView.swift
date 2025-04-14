@@ -16,6 +16,8 @@ struct SettingsView: View {
     
     var body: some View {
         List {
+            Text(viewModel.currentUserEmail)
+            
             NavigationLink("Leave a comment") {
                 CommentView()
             }

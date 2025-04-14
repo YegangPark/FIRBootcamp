@@ -17,7 +17,9 @@ final class CommentManager {
     
     private let db = Firestore.firestore()
     
-    private var user = AuthManager.shared.getAuthenticatedUser()
+    private var user: UserModel? {
+        AuthManager.shared.getAuthenticatedUser()
+    }
     
     func addComment(comment: String) async throws {
         

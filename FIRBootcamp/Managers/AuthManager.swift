@@ -91,8 +91,13 @@ class AuthManager {
     
     // MARK: Google signing
     func googleSignIn(credential: AuthCredential) async throws {
-        try await Auth.auth().signIn(with: credential)
+        let result = try await Auth.auth().signIn(with: credential)
         signInMethod = .google
+        if
+            let isNew = result.additionalUserInfo?.isNewUser,
+            isNew == true {
+            UserManager.shared.createUserDocIfNotExists()
+        }
         print("Auth method allocated: Google")
     }
     

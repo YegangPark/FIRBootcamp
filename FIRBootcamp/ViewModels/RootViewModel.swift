@@ -31,6 +31,5 @@ final class RootViewModel {
         
         try await AuthManager.shared.googleSignIn(credential: credential)
         
-        UserManager.shared.createUserDocIfNotExists()
     }
 }

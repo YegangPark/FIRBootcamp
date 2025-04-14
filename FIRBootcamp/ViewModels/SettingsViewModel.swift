@@ -11,7 +11,9 @@ import Observation
 @Observable
 final class SettingsViewModel {
     
-    private(set) var currentUserEmail = AuthManager.shared.currentUser?.email ?? "Anonymous"
+    var currentUserEmail: String {
+        AuthManager.shared.currentUser?.email ?? "Anonymous"
+    }
     
     func signOut() {
         do {

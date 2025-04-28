@@ -15,9 +15,9 @@ import GoogleSignInSwift
 
 class AuthManager {
     
-    var currentUser: UserModel? {
+    var currentUser: User? {
         if let user = Auth.auth().currentUser {
-            return UserModel(user: user)
+            return user
         } else {
             return nil
         }
@@ -96,7 +96,7 @@ class AuthManager {
         if
             let isNew = result.additionalUserInfo?.isNewUser,
             isNew == true {
-            UserManager.shared.createUserDocIfNotExists()
+            await UserManager.shared.createUserDocIfNotExists()
         }
         print("Auth method allocated: Google")
     }

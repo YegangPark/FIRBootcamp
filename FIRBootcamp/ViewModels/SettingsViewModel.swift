@@ -11,8 +11,19 @@ import Observation
 @Observable
 final class SettingsViewModel {
     
+    var userModel: UserModel? = nil
+    
     var currentUserEmail: String {
         AuthManager.shared.currentUser?.email ?? "Anonymous"
+    }
+    
+    func loadUser() async {
+        do {
+            userModel = try await UserManager.shared.getUserModel()
+            print("userModel allocated")
+        } catch {
+            print("Error loading user: \(error.localizedDescription)")
+        }
     }
     
     func signOut() {
@@ -31,4 +42,11 @@ final class SettingsViewModel {
             return "Could not load comment."
         }
     }
+    
+// MARK: Change Username
+    var inputText: String = ""
+    
+    func changeUsername(newUsername: String) async {
+        await UserManager.shared.updateUsername(newUsername: newUsername)
+    }    
 }

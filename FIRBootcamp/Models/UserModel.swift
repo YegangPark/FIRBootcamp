@@ -12,9 +12,9 @@ struct UserModel: Codable, Identifiable {
     let uid: String
     let id: String
     let email: String?
-    var comment: String = ""
-    var username: String = ""
-    var avatarURL: URL?
+    var comment: String?
+    var username: String?
+    var avatarURLstring: String = "https://i.pinimg.com/736x/0d/64/98/0d64989794b1a4c9d89bff571d3d5842.jpg"
     
     init(user: User) {
         uid = user.uid
@@ -28,7 +28,7 @@ struct UserModel: Codable, Identifiable {
         email = "realdonaldtrump@gmail.com"
         comment = "This is a test comment"
         username = "Trump"
-        avatarURL = URL(string: "https://upload.wikimedia.org/wikipedia/commons/8/83/TrumpPortrait.jpg")
+        avatarURLstring = "https://upload.wikimedia.org/wikipedia/commons/8/83/TrumpPortrait.jpg"
     }
     
     static let fake = UserModel()

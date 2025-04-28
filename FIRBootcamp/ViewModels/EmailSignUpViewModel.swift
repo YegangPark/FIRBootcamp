@@ -19,7 +19,7 @@ final class EmailSignUpViewModel {
     
     func signUp() async throws {
         try await AuthManager.shared.EmailSignUp(email: email, password: password)        
-        UserManager.shared.createUserDocIfNotExists()
+        await UserManager.shared.createUserDocIfNotExists()
     }
     
     func signIn() async throws {

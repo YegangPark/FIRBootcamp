@@ -15,25 +15,45 @@ class UserManager {
     
     private init() { }
     
+    private let db = Firestore.firestore()
+    
+    var currentUser = AuthManager.shared.currentUser
+    
     func createUserDoc(for user: UserModel) {
-        
-        let db = Firestore.firestore()
-        
-        let userData: [String: Any] = [
-            "uid" : user.uid,
-            "email" : user.email,
-            "comment" : user.comment
-        ]
-
-        db.collection("users").document(user.uid).setData(userData, merge: false)
+        do {
+            let data = try Firestore.Encoder().encode(user)
+            db.collection("users").document(user.uid).setData(data)
+        } catch {
+            print("Error encoding user doc: \(error)")
+        }
     }
     
-    func createUserDocIfNotExists() {
-        guard let user = AuthManager.shared.getAuthenticatedUser() else {
+    
+    func createUserDocIfNotExists() async {
+        guard let userModel = try? await getUserModel() else {
+            return
+        }
+        UserManager.shared.createUserDoc(for: userModel)
+    }
+    
+    func updateUsername(newUsername: String) async {
+        guard let user = currentUser else {
             print("Couldn't get user")
             return
         }
-        UserManager.shared.createUserDoc(for: user)
+        
+        do {
+            try await db.collection("users").document(user.uid).setData(["username" : newUsername], merge: true)
+            print("New username uploaded to db!")
+        } catch {
+            print("Error updating username: \(error)")
+        }
     }
     
+    func getUserModel() async throws -> UserModel? {
+        
+        guard let user = currentUser else { return nil }
+        
+        return try await db.collection("users").document(user.uid).getDocument(as: UserModel.self)
+    }
 }
